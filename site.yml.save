@@ -1,0 +1,12 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks: 
+
+  - name: update repo cache
+    tags: always
+    dnf:
+      update_cache: yes
+    changed_when: false
+    when: ansi
