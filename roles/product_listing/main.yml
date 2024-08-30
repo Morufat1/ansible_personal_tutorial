@@ -1,0 +1,10 @@
+---
+- name: Create product listing directory
+  file:
+    path: /var/www/html/product_listing
+    state: directory
+
+- name: Deploy product listing page
+  template:
+    src: product_listing.html
+    dest: /var/www/html/product_listing/index.html

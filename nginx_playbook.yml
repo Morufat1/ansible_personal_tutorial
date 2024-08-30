@@ -4,3 +4,7 @@
   become: yes
   roles:
     - nginx
+    - product_listing
+    - shopping_cart
+    - user_authentication
+    - payment_processing

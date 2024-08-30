@@ -1,0 +1,10 @@
+---
+- name: Install Stripe Node.js package
+  npm:
+    name: stripe
+    global: yes
+
+- name: Deploy payment processing script
+  template:
+    src: payment.js
+    dest: /var/www/html/auth-app/payment.js
