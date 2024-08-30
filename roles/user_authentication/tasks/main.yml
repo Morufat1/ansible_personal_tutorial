@@ -12,7 +12,7 @@
 
 - name: Clone authentication app
   git:
-    repo: 'https://github.com/Morufat1/ansible_personal_tutorial.git'
+    repo: https://github.com/Morufat1/ansible_personal_tutorial/auth-app.git
     dest: /var/www/html/auth-app
 
 - name: Install Node.js dependencies
