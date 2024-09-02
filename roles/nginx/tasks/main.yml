@@ -20,3 +20,22 @@
     name: nginx
     enabled: yes
 
+- name: Install apache2-utils (for htpasswd)
+  apt:
+    name: apache2-utils
+    state: present
+  become: yes
+
+
+- name: Create .htpasswd file for basic authentication
+  command: htpasswd -bc /etc/nginx/.htpasswd <mor> <paswd1>
+  args:
+    creates: /etc/nginx/.htpasswd
+  become: yes
+
+- name: Copy Nginx configuration with basic authentication
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/default
+  notify: Restart Nginx
+  become: yes

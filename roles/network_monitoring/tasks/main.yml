@@ -1,0 +1,39 @@
+---
+- name: Install SNMP Exporter
+  apt:
+    name: snmp
+    state: present
+
+- name: Download SNMP Exporter binary
+  get_url:
+    url: https://github.com/prometheus/snmp_exporter/releases/download/v0.20.0/snmp_exporter-0.20.0.linux-amd64.tar.gz
+    dest: /tmp/snmp_exporter.tar.gz
+
+- name: Extract SNMP Exporter
+  unarchive:
+    src: /tmp/snmp_exporter.tar.gz
+    dest: /opt/
+    remote_src: yes
+
+- name: Move SNMP Exporter binary to /usr/local/bin
+  command: mv /opt/snmp_exporter*/snmp_exporter /usr/local/bin/snmp_exporter
+
+- name: Create SNMP Exporter service file
+  copy:
+    content: |
+      [Unit]
+      Description=Prometheus SNMP Exporter
+      After=network.target
+
+      [Service]
+      ExecStart=/usr/local/bin/snmp_exporter
+
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/snmp_exporter.service
+
+- name: Start SNMP Exporter service
+  systemd:
+    name: snmp_exporter
+    enabled: yes
+    state: started

@@ -1,0 +1,7 @@
+- name: Copy Prometheus configuration file
+  copy:
+    src: files/prometheus.yml
+    dest: /etc/prometheus/prometheus.yml
+    owner: prometheus
+    group: prometheus
+    mode: '0644'

@@ -1,0 +1,21 @@
+---
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: Create Prometheus configuration directory
+      file:
+        path: /etc/prometheus
+        state: directory
+        owner: prometheus
+        group: prometheus
+        mode: '0755'
+
+    - name: Copy Prometheus configuration file
+      copy:
+        src: prometheus.yml
+        dest: /etc/prometheus/prometheus.yml
+        owner: prometheus
+        group: prometheus
+        mode: '0644'
+

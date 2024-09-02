@@ -1,0 +1,18 @@
+---
+- name: Install SNMP Exporter on target servers
+  hosts: all
+  become: yes
+  tasks:
+    - name: Copy SNMP Exporter tarball to the target server
+      copy:
+        src: files/snmp_exporter.tar.gz
+        dest: /tmp/snmp_exporter.tar.gz
+
+    - name: Extract SNMP Exporter tarball
+      unarchive:
+        src: /tmp/snmp_exporter.tar.gz
+        dest: /opt/
+        remote_src: yes
+
+    - name: Move SNMP Exporter binary to /usr/local/bin
+      command: mv /opt/snmp_exporter-0.21.0.linux-amd64/snmp_exporter /usr/local/bin/snmp_exporter
