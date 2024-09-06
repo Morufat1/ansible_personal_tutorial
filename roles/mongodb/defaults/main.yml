@@ -1,0 +1,9 @@
+---
+# defaults file for roles/mongodb
+
+
+mongodb_admin_user: admin
+mongodb_admin_password: securepassword
+mongodb_db_name: platform_db
+mongodb_db_user: platform_user
+mongodb_db_password: platform_pass

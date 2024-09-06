@@ -1,0 +1,10 @@
+---
+
+ansible_distribution_release: focal
+
+mongo_admin_user: "admin"
+mongo_admin_pass: "admin_password"
+mongo_db_name: "myapp_db"
+mongo_db_user: "myapp_user"
+mongo_db_pass: "myapp_password"
+mongo_remove_test_db: true

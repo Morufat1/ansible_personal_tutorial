@@ -1,0 +1,14 @@
+---
+- name: Secure MongoDB - Create Admin User
+  mongodb_user:
+    database: admin
+    name: "{{ mongo_admin_user }}"
+    password: "{{ mongo_admin_pass }}"
+    roles: 
+      - role: root
+        db: admin
+    state: present
+
+- name: Secure MongoDB - Remove test databases
+  command: mongo --eval "db.getSiblingDB('test').dropDatabase()"
+  when: mongo_remove_test_db

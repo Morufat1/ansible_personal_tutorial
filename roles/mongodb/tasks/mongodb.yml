@@ -1,0 +1,46 @@
+---
+    - name: Pull MongoDB Community Server image
+      docker_image:
+        name: mongodb/mongodb-community-server
+        source: pull
+
+    - name: Run MongoDB container
+      docker_container:
+        name: my-mongo
+        image: mongodb/mongodb-community-server
+        state: started
+        ports:
+          - "27017:27017"
+        env:
+          MONGO_INITDB_ROOT_USERNAME: testing
+          MONGO_INITDB_ROOT_PASSWORD: passed
+        volumes:
+          - /srv/mongo-init:/docker-entrypoint-initdb.d
+        restart_policy: always
+
+    - name: Ensure initialization directory exists
+      file:
+        path: /srv/mongo-init
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Add MongoDB initialization script to create database and user
+      copy:
+        dest: /srv/mongo-init/init-mongo.js
+        content: |
+          db = db.getSiblingDB('user_database'); // Switch to or create 'user_database'
+          db.createUser({
+            user: "user",
+            pwd: "user_password",
+            roles: [
+              { role: "readWrite", db: "user_database" }
+            ]
+          });
+        mode: '0644'
+
+    - name: Restart MongoDB container to apply initialization
+      docker_container:
+        name: my-mongo
+        state: restarted

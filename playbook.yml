@@ -1,0 +1,13 @@
+---
+- hosts: webservers
+  become: true
+  gather_facts: no
+  vars:
+    mongodb_admin_user: admin
+    mongodb_admin_password: "admin_secure_password"
+    mongodb_db_name: platform_db
+    mongodb_db_user: platform_user
+    mongodb_db_password: "user_secure_password"
+  roles:
+    - docker
+    - mongodb

@@ -1,0 +1,6 @@
+db = db.getSiblingDB("{{ mongodb_db_name }}");
+db.createUser({
+  user: "{{ mongodb_db_user }}",
+  pwd: "{{ mongodb_db_password }}",
+  roles: [{ role: "readWrite", db: "{{ mongodb_db_name }}" }]
+});

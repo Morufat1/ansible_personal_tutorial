@@ -1,0 +1,28 @@
+# ~/ansible_personal_tutorial/roles/mongodb/tasks/main.yml
+
+- name: Pull MongoDB Docker image
+  community.docker.docker_image:
+    name: mongo
+    tag: "6.0"
+    source: pull
+
+- name: Start MongoDB container
+  community.docker.docker_container:
+    name: mongodb
+    image: mongo:6.0
+    state: started
+    restart_policy: always
+    ports:
+      - "27017:27017"
+
+- name: Secure the database
+  community.docker.docker_container_exec:
+    container: mongodb
+    command: |
+      mongo --eval 'db.getSiblingDB("admin").createUser({user: "admin", pwd: "securepassword", roles:[{role: "userAdminAnyDatabase", db: "admin"}]})'
+
+- name: Create database and user
+  community.docker.docker_container_exec:
+    container: mongodb
+    command: |
+      mongo --eval 'db.getSiblingDB("mydatabase").createUser({user: "dbuser", pwd: "dbpassword", roles:[{role: "readWrite", db: "mydatabase"}]})'

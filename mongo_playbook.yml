@@ -3,4 +3,4 @@
 - hosts: webservers
   become: yes
   roles:
-    - nginx
+    - mongodb

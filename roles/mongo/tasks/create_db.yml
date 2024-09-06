@@ -1,0 +1,10 @@
+---
+- name: Create application database
+  mongodb_user:
+    database: "{{ mongo_db_name }}"
+    name: "{{ mongo_db_user }}"
+    password: "{{ mongo_db_pass }}"
+    roles:
+      - role: readWrite
+        db: "{{ mongo_db_name }}"
+    state: present

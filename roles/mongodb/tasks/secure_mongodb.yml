@@ -1,0 +1,12 @@
+---
+- name: Create a MongoDB admin user
+  docker_container_exec:
+    container: mongodb
+    command: >
+      mongo admin --eval 'db.createUser({user: "{{ mongodb_admin_user }}", pwd: "{{ mongodb_admin_password }}", roles: ["root"]})'
+
+- name: Remove test databases
+  docker_container_exec:
+    container: mongodb
+    command: >
+      mongo admin --eval 'db.getSiblingDB("test").dropDatabase()'

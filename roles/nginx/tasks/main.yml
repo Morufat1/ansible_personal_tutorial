@@ -20,6 +20,18 @@
     name: nginx
     enabled: yes
 
+- name: Make a backup copy of Nginx default file
+  ansible.builtin.copy:
+    src: /etc/nginx/sites-available/default
+    dest: /etc/nginx/sites-available/default.old
+    force: no
+    remote_src: yes
+
+- name: Configure Nginx to server as a reverse proxy
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/default
+
 - name: Install apache2-utils (for htpasswd)
   apt:
     name: apache2-utils
@@ -28,7 +40,7 @@
 
 
 - name: Create .htpasswd file for basic authentication
-  command: htpasswd -bc /etc/nginx/.htpasswd <mor> <paswd1>
+  command: htpasswd -bc /etc/nginx/.htpasswd user passsword
   args:
     creates: /etc/nginx/.htpasswd
   become: yes
@@ -36,6 +48,6 @@
 - name: Copy Nginx configuration with basic authentication
   template:
     src: nginx.conf.j2
-    dest: /etc/nginx/sites-available/default
+    dest: /etc/nginx/nginx.conf
   notify: Restart Nginx
   become: yes
